@@ -1,10 +1,11 @@
 class RequestsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_request, only: [:show, :edit, :update, :destroy]
 
   # GET /requests
   # GET /requests.json
   def index
-    @requests = Request.all
+    @requests = Request.accessible_by(current_ability)
   end
 
   # GET /requests/1
@@ -24,7 +25,7 @@ class RequestsController < ApplicationController
   # POST /requests
   # POST /requests.json
   def create
-    @request = Request.new(request_params)
+    @request = Request.new(request_params.merge(user: current_user))
 
     respond_to do |format|
       if @request.save
@@ -69,6 +70,6 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:title, :body)
+      params.require(:request).permit(:title, :body, :user_id)
     end
 end
