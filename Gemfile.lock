@@ -248,6 +248,7 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.4)
   rails-flog
+  responders (~> 2.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
