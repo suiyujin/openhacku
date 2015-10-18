@@ -45,22 +45,12 @@ set :unicorn_pid, "#{shared_path}/tmp/pids/unicorn.pid"
 
 set :bundle_jobs, 4
 
+after 'deploy:publishing', 'deploy:restart'
 namespace :deploy do
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
+  task :restart do
+    on roles(:all) do
+      execute "cd #{current_path} && (RAILS_ENV=produciton #{fetch(:rbenv_prefix)} bundle exec rake unicorn:stop)"
+      execute "cd #{current_path} && (RAILS_ENV=produciton #{fetch(:rbenv_prefix)} bundle exec rake unicorn:start)"
     end
   end
-
-  after 'deploy:publishing', 'deploy:restart'
-  namespace :deploy do
-    task :restart do
-      invoke 'unicorn:restart'
-    end
-  end
-
 end
