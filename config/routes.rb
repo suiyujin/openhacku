@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resource :authentication_token, only: [:update, :destroy]
   resources :requests
   devise_for :users
   get 'hello' => 'hello#index'
