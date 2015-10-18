@@ -4,7 +4,7 @@ timeout 15
 preload_app true  # 更新時ダウンタイム無し
 
 listen "/var/sockets/unicorn.sock"
-pid "/tmp/unicorn.pid"
+pid "/var/www/hotmilk/shared/tmp/pids/unicorn.pid"
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do
