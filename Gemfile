@@ -30,9 +30,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Unicorn as the app server
 gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   #gem 'byebug'
@@ -60,4 +57,11 @@ group :development do
 
   # for probrem of n+1
   gem 'bullet'
+
+  # Use Capistrano for deployment
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-bundler'
+  gem 'capistrano3-unicorn'
 end
