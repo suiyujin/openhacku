@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resource :authentication_token, only: [:update, :destroy]
+  resources :requests
+  devise_for :users, controllers: { sessions: "sessions" }
   get 'hello' => 'hello#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
