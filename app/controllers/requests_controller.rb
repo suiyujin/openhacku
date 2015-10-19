@@ -1,10 +1,15 @@
 class RequestsController < ApplicationController
   load_and_authorize_resource
+  skip_load_and_authorize_resource only: :index
   before_action :set_request, only: [:show, :edit, :update, :destroy]
 
   # GET /requests
   # GET /requests.json
   def index
+    @requests = Request.all
+  end
+
+  def my_list
     @requests = Request.accessible_by(current_ability)
   end
 
