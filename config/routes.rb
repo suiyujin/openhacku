@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resource :authentication_token, only: [:update, :destroy]
   resources :requests
-  devise_for :users, controllers: { sessions: "sessions" }
+  devise_for :users, :skip => [:sessions]
+  as :user do
+    post 'login' => 'sessions#create', :as => :user_session
+    delete 'logout' => 'authentication_tokens#destroy', :as => :destroy_user_session
+  end
   get 'hello' => 'hello#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
