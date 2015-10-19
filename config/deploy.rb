@@ -47,6 +47,18 @@ set :bundle_jobs, 4
 
 after 'deploy:publishing', 'deploy:restart'
 namespace :deploy do
+  task :start do
+    on roles(:all) do
+      execute "cd #{current_path} && (RAILS_ENV=produciton #{fetch(:rbenv_prefix)} bundle exec rake unicorn:start)"
+    end
+  end
+
+  task :stop do
+    on roles(:all) do
+      execute "cd #{current_path} && (RAILS_ENV=produciton #{fetch(:rbenv_prefix)} bundle exec rake unicorn:stop)"
+    end
+  end
+
   task :restart do
     on roles(:all) do
       execute "cd #{current_path} && (RAILS_ENV=produciton #{fetch(:rbenv_prefix)} bundle exec rake unicorn:stop)"
