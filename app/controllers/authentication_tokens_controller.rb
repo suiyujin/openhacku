@@ -8,6 +8,6 @@ class AuthenticationTokensController < ApplicationController
 
   def destroy
     current_user.delete_authentication_token
-    render nothing: true
+    render json: {message: 'logout successfull.'}.to_json
   end
 end
