@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'requests/my_list' => 'requests#my_list'
   resources :requests
   devise_for :users, :skip => [:sessions]
   as :user do
