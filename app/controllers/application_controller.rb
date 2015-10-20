@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   # json でのリクエストの場合CSRFトークンの検証をスキップ
   skip_before_action :verify_authenticity_token, if: -> {request.format.json?}
   # トークンによる認証
-  before_action      :authenticate_user_from_token!, if: -> {params[:email].present?}
+  before_action      :authenticate_user_from_token!, if: -> {params[:user].present? && params[:user][:token].present?}
 
   # 権限無しのリソースにアクセスしようとした場合
   rescue_from CanCan::AccessDenied do |exception|
@@ -18,9 +18,7 @@ class ApplicationController < ActionController::Base
 
   # トークンによる認証
   def authenticate_user_from_token!
-    user = User.find_by(email: params[:email])
-    if Devise.secure_compare(user.try(:authentication_token), params[:token])
-      sign_in user, store: false
-    end
+    user = User.find_by(authentication_token: params[:user][:token])
+    sign_in user, store: false
   end
 end
