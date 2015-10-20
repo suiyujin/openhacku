@@ -10,7 +10,7 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.includes(:user, :bought_user).limit(params[:limit]).offset(params[:offset])
+    @tickets = Ticket.includes(:user, :bought_user).where('id > ?', params[:offset]).limit(params[:limit])
   end
 
   def my_list
