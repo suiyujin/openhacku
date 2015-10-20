@@ -10,7 +10,7 @@ class TicketsController < ApplicationController
   end
 
   def my_list
-        @requests = Request.accessible_by(current_ability)
+    @tickets = Ticket.accessible_by(current_ability)
   end
 
   # GET /tickets/1
