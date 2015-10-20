@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: :index
+  skip_load_and_authorize_resource only: [:index, :show]
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_and_offset, only: [:index, :my_list]
 
