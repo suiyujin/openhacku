@@ -1,4 +1,8 @@
-json.array!(@tickets) do |ticket|
-  json.extract! ticket, :id, :title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id
-  json.url ticket_url(ticket, format: :json)
+json.tickets do |json|
+  json.array!(@tickets) do |ticket|
+    json.extract! ticket, :id, :title, :body, :time, :price, :place
+    json.user do
+      json.name ticket.user.name
+    end
+  end
 end

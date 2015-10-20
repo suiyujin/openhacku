@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020023323) do
+ActiveRecord::Schema.define(version: 20151020080610) do
 
   create_table "tickets", force: :cascade do |t|
     t.string   "title",          limit: 255,                   null: false
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 20151020023323) do
     t.string   "authentication_token",   limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.string   "name",                   limit: 255,              null: false
+    t.string   "introduction",           limit: 255
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
