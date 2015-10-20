@@ -2,6 +2,7 @@ class TicketsController < ApplicationController
   load_and_authorize_resource
   skip_load_and_authorize_resource only: :index
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_and_offset, only: [:index, :my_list]
 
   DEFAULT_LIMIT = 10
   DEFAULT_OFFSET = 0
@@ -9,13 +10,11 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    params[:limit] ||= DEFAULT_LIMIT
-    params[:offset] ||= DEFAULT_OFFSET
     @tickets = Ticket.includes(:user, :bought_user).limit(params[:limit]).offset(params[:offset])
   end
 
   def my_list
-    @tickets = Ticket.accessible_by(current_ability)
+    @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).limit(params[:limit]).offset(params[:offset])
   end
 
   # GET /tickets/1
@@ -81,5 +80,10 @@ class TicketsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
       params.require(:ticket).permit(:title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id)
+    end
+
+    def set_limit_and_offset
+      params[:limit] ||= DEFAULT_LIMIT
+      params[:offset] ||= DEFAULT_OFFSET
     end
 end
