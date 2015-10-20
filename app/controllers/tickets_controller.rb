@@ -3,10 +3,15 @@ class TicketsController < ApplicationController
   skip_load_and_authorize_resource only: :index
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
 
+  DEFAULT_LIMIT = 10
+  DEFAULT_OFFSET = 0
+
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.all
+    params[:limit] ||= DEFAULT_LIMIT
+    params[:offset] ||= DEFAULT_OFFSET
+    @tickets = Ticket.includes(:user, :bought_user).limit(params[:limit]).offset(params[:offset])
   end
 
   def my_list
