@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'requests/my_list' => 'requests#my_list'
-  resources :requests
+  get 'tickets/my_list' => 'tickets#my_list'
+  resources :tickets
   devise_for :users, :skip => [:sessions]
   as :user do
     post 'login' => 'sessions#create', :as => :user_session
