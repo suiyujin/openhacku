@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   # 認証トークンはユニーク。ただしnilは許可
   validates:authentication_token, uniqueness: true, allow_nil: true
   has_many :requests
+  has_many :tickets
+  has_many :bought_tickets, class_name: 'Ticket', foreign_key: 'bought_user_id'
 
   # 認証トークンが無い場合は作成
   def ensure_authentication_token

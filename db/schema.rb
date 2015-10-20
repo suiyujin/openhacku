@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018181859) do
+ActiveRecord::Schema.define(version: 20151020023323) do
 
   create_table "requests", force: :cascade do |t|
     t.string   "title",      limit: 255
@@ -22,6 +22,22 @@ ActiveRecord::Schema.define(version: 20151018181859) do
   end
 
   add_index "requests", ["user_id"], name: "index_requests_on_user_id", using: :btree
+
+  create_table "tickets", force: :cascade do |t|
+    t.string   "title",          limit: 255,                   null: false
+    t.text     "body",           limit: 65535,                 null: false
+    t.float    "time",           limit: 24,                    null: false
+    t.integer  "price",          limit: 4,                     null: false
+    t.string   "place",          limit: 255,                   null: false
+    t.boolean  "bought",                       default: false, null: false
+    t.integer  "user_id",        limit: 4,                     null: false
+    t.integer  "bought_user_id", limit: 4
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+  end
+
+  add_index "tickets", ["bought_user_id"], name: "index_tickets_on_bought_user_id", using: :btree
+  add_index "tickets", ["user_id"], name: "index_tickets_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -44,4 +60,5 @@ ActiveRecord::Schema.define(version: 20151018181859) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "requests", "users"
+  add_foreign_key "tickets", "users"
 end
