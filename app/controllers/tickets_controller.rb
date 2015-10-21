@@ -2,19 +2,21 @@ class TicketsController < ApplicationController
   load_and_authorize_resource
   skip_load_and_authorize_resource only: [:index, :show]
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
-  before_action :set_limit_and_offset, only: [:index, :my_list]
+  before_action :set_default_if_no_params, only: [:index, :my_list]
 
+  DEFAULT_SORT = 'create'
+  DEFAULT_ORDER = 'd'
   DEFAULT_LIMIT = 10
   DEFAULT_OFFSET = 0
 
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.includes(:user, :bought_user).where('id > ?', params[:offset]).limit(params[:limit])
+    @tickets = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   def my_list
-    @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).limit(params[:limit]).offset(params[:offset])
+    @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   # GET /tickets/1
@@ -82,8 +84,28 @@ class TicketsController < ApplicationController
       params.require(:ticket).permit(:title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id)
     end
 
-    def set_limit_and_offset
+    def set_default_if_no_params
+      params[:sort] ||= DEFAULT_SORT
+      params[:order] ||= DEFAULT_ORDER
       params[:limit] ||= DEFAULT_LIMIT
       params[:offset] ||= DEFAULT_OFFSET
+    end
+
+    def make_order_query
+      if params[:sort] == 'create'
+        if params[:order] == 'd'
+          return 'id desc'
+        elsif params[:order] == 'a'
+          return 'id asc'
+        end
+      end
+
+      case params[:order]
+      when 'd' then
+        order_query = "#{params[:sort]} desc"
+      when 'a' then
+        order_query = "#{params[:sort]} asc"
+      end
+      order_query += ', id desc'
     end
 end
