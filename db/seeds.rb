@@ -8,5 +8,6 @@
 require 'csv'
 
 # users
+#User.connection.execute("TRUNCATE TABLE users;")
 users = CSV.read('db/dummy_data/users.csv')
 User.create(users[1..-1].map { |user| Hash[*users[0].zip(user).flatten] })
