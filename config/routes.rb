@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'tickets/my_list' => 'tickets#my_list'
   get 'tickets/learned' => 'tickets#learned'
   get 'tickets/teached' => 'tickets#teached'
+  patch 'tickets/:id/buy' => 'tickets#buy'
   resources :tickets
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do
