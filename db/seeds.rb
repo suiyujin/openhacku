@@ -11,11 +11,7 @@ require 'csv'
 users = CSV.read('db/dummy_data/users.csv')
 User.create(users[1..-1].map { |user| Hash[*users[0].zip(user).flatten] })
 
-# tickets
-tickets = CSV.read('db/dummy_data/tickets.csv')
-Ticket.create(tickets[1..-1].map { |ticket| Hash[*tickets[0].zip(ticket).flatten] })
-
-# more tickets(user3~6)
+# sample tickets
 dummy_tickets = Array.new
 1.upto(users.size-1) do |user_id|
   1.upto(5) do |num|
@@ -33,3 +29,7 @@ dummy_tickets = Array.new
   end
 end
 Ticket.create(dummy_tickets)
+
+# tickets
+tickets = CSV.read('db/dummy_data/tickets.csv')
+Ticket.create(tickets[1..-1].map { |ticket| Hash[*tickets[0].zip(ticket).flatten] })
