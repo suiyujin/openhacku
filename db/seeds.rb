@@ -17,7 +17,7 @@ Ticket.create(tickets[1..-1].map { |ticket| Hash[*tickets[0].zip(ticket).flatten
 
 # more tickets(user3~6)
 dummy_tickets = Array.new
-3.upto(users.size-1) do |user_id|
+1.upto(users.size-1) do |user_id|
   1.upto(5) do |num|
     dummy_tickets << {
       title: "title#{user_id}#{num}",
