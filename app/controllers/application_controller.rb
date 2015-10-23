@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, if: -> {request.format.json?}
   # トークンによる認証
   before_action :authenticate_user_from_token!, if: -> {params[:user].present? && params[:user][:token].present?}
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   # 権限無しのリソースにアクセスしようとした場合
   rescue_from CanCan::AccessDenied do |exception|
@@ -20,5 +21,11 @@ class ApplicationController < ActionController::Base
   def authenticate_user_from_token!
     user = User.find_by(authentication_token: params[:user][:token])
     sign_in user, store: false
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << [:name, :introduction]
   end
 end
