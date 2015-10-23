@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'tickets/my_list' => 'tickets#my_list'
+  get 'users/:user_id/learned' => 'tickets#learned'
   resources :tickets
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do

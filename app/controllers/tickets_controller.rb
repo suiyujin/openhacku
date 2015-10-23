@@ -1,8 +1,8 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show]
+  skip_load_and_authorize_resource only: [:index, :show, :learned]
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
-  before_action :set_default_if_no_params, only: [:index, :my_list]
+  before_action :set_default_if_no_params, only: [:index, :my_list, :learned]
 
   DEFAULT_SORT = 'create'
   DEFAULT_ORDER = 'd'
@@ -17,6 +17,10 @@ class TicketsController < ApplicationController
 
   def my_list
     @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
+  end
+
+  def learned
+    @tickets = Ticket.includes(:user, :bought_user).user(params[:user_id]).bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   # GET /tickets/1
