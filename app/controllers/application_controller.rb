@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   # json でのリクエストの場合CSRFトークンの検証をスキップ
   skip_before_action :verify_authenticity_token, if: -> {request.format.json?}
   # トークンによる認証
-  before_action      :authenticate_user_from_token!, if: -> {params[:user].present? && params[:user][:token].present?}
+  before_action :authenticate_user_from_token!, if: -> {params[:user].present? && params[:user][:token].present?}
 
   # 権限無しのリソースにアクセスしようとした場合
   rescue_from CanCan::AccessDenied do |exception|
