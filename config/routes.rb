@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'tickets/my_list' => 'tickets#my_list'
   resources :tickets
-  devise_for :users, :skip => [:sessions]
+  devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do
     post 'login' => 'sessions#create', :as => :user_session
     delete 'logout' => 'authentication_tokens#destroy', :as => :destroy_user_session
