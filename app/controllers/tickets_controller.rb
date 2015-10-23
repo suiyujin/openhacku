@@ -12,11 +12,11 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    @tickets = Ticket.includes(:user, :bought_user).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   def my_list
-    @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   # GET /tickets/1
