@@ -15,7 +15,7 @@ class TicketsController < ApplicationController
   def index
     # filterがteachedまたはlearnedの時はuser_idが必要
     if ['teached', 'learned'].include?(params[:filter]) && params[:user_id].blank?
-      render json: { message: 'ERROR: need user_id parameter!' }
+      render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
     query = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
