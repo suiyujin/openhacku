@@ -1,33 +1,40 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :learned, :teached, :buy]
+  skip_load_and_authorize_resource only: [:index, :show, :buy]
   before_action :set_ticket, only: [:show, :edit, :update, :buy, :destroy]
-  before_action :set_default_if_no_params, only: [:index, :my_list, :learned, :teached]
+  before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
   DEFAULT_ORDER = 'd'
   DEFAULT_LIMIT = 10
   DEFAULT_OFFSET = 0
+  DEFAULT_FILTER = 'all'
 
   # GET /tickets
   # GET /tickets.json
   def index
-    query = Ticket.includes(:user, :bought_user).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
-    query = query.user(params[:user_id]) if params[:user_id].present?
+    # filterがteachedまたはlearnedの時はuser_idが必要
+    if ['teached', 'learned'].include?(params[:filter]) && params[:user_id].blank?
+      render json: { message: 'ERROR: need user_id parameter!' }
+    end
+
+    query = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
+
+    case params[:filter]
+    when 'no_bought' then
+      query = query.no_bought
+      query = query.user(params[:user_id]) if params[:user_id].present?
+    when 'teached' then
+      query = query.bought_user(params[:user_id])
+    when 'learned' then
+      query = query.user(params[:user_id]).bought
+    end
 
     @tickets = query
   end
 
   def my_list
     @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
-  end
-
-  def learned
-    @tickets = Ticket.includes(:user, :bought_user).user(params[:user_id]).bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
-  end
-
-  def teached
-    @tickets = Ticket.includes(:user, :bought_user).bought_user(params[:user_id]).order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
 
   # GET /tickets/1
@@ -110,6 +117,7 @@ class TicketsController < ApplicationController
       params[:order] ||= DEFAULT_ORDER
       params[:limit] ||= DEFAULT_LIMIT
       params[:offset] ||= DEFAULT_OFFSET
+      params[:filter] ||= DEFAULT_FILTER
     end
 
     def make_order_query
