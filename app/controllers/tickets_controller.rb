@@ -13,7 +13,7 @@ class TicketsController < ApplicationController
   # GET /tickets.json
   def index
     query = Ticket.includes(:user, :bought_user).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
-    query = query.where(user_id: params[:user_id]) if params[:user_id].present?
+    query = query.user(params[:user_id]) if params[:user_id].present?
 
     @tickets = query
   end
