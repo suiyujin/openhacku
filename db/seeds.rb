@@ -13,13 +13,16 @@ end
 
 # categories
 Category.create(make_dummy_data(CSV.read('db/dummy_data/categories.csv')))
+p 'categories created.'
 
 # keywords
 Keyword.create(make_dummy_data(CSV.read('db/dummy_data/keywords.csv')))
+p 'keywords created.'
 
 # users
 users = CSV.read('db/dummy_data/users.csv')
 User.create(make_dummy_data(users))
+p 'users created.'
 
 # sample tickets
 dummy_tickets = Array.new
@@ -38,12 +41,15 @@ dummy_tickets = Array.new
   end
 end
 Ticket.create(dummy_tickets)
+p 'sample tickets created.'
 
 # tickets
 Ticket.create(make_dummy_data(CSV.read('db/dummy_data/tickets.csv')))
+p 'tickets created.'
 
 # ticket_levels
 TicketLevel.create(make_dummy_data(CSV.read('db/dummy_data/ticket_levels.csv')))
+p 'ticket_levels created.'
 
 # sample keywords_tickets
 tickets_count = Ticket.count
@@ -57,9 +63,11 @@ dummy_keywords_tickets = Array.new
   end
 end
 KeywordsTicket.create(dummy_keywords_tickets)
+p 'sample keywords_tickets created.'
 
 # keywords_tickets
 KeywordsTicket.create(make_dummy_data(CSV.read('db/dummy_data/keywords_tickets.csv')))
+p 'keywords_tickets created.'
 
 # sample keywords_users
 dummy_keywords_users = Array.new
@@ -72,3 +80,4 @@ dummy_keywords_users = Array.new
   end
 end
 KeywordsUser.create(dummy_keywords_users)
+p 'sample keywords_usres created.'
