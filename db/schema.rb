@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025013551) do
+ActiveRecord::Schema.define(version: 20151025084812) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", limit: 255, null: false
+  end
+
+  add_index "categories", ["name"], name: "index_categories_on_name", unique: true, using: :btree
+
+  create_table "keywords", force: :cascade do |t|
+    t.string  "name",        limit: 255, null: false
+    t.integer "category_id", limit: 4,   null: false
+  end
+
+  add_index "keywords", ["category_id"], name: "index_keywords_on_category_id", using: :btree
+  add_index "keywords", ["name"], name: "index_keywords_on_name", using: :btree
 
   create_table "stock_tickets", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
@@ -67,6 +81,7 @@ ActiveRecord::Schema.define(version: 20151025013551) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "keywords", "categories"
   add_foreign_key "stock_tickets", "tickets"
   add_foreign_key "stock_tickets", "users"
   add_foreign_key "tickets", "users"
