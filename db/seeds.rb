@@ -52,9 +52,8 @@ TicketLevel.create(make_dummy_data(CSV.read('db/dummy_data/ticket_levels.csv')))
 p 'ticket_levels created.'
 
 # sample keywords_tickets
-tickets_count = Ticket.count
 dummy_keywords_tickets = Array.new
-1.upto(tickets_count) do |ticket_id|
+1.upto((users.size-1)*5) do |ticket_id|
   1.upto(5) do |num|
     dummy_keywords_tickets << {
       ticket_id: ticket_id,
