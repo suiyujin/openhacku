@@ -30,7 +30,7 @@ class TicketsController < ApplicationController
     when 'learned' then
       query = query.user(params[:user_id]).bought
     when 'stock' then
-      query = query.joins_stock_tickets_where_user(params[:user_id])
+      query = query.no_bought.joins_stock_tickets_where_user(params[:user_id])
     end
 
     @tickets = query
