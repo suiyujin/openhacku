@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'tickets/my_list' => 'tickets#my_list'
   post 'tickets/:id/stock' => 'tickets#stock'
   patch 'tickets/:id/buy' => 'tickets#buy'
-  delete 'tickets/:id/stock' => 'tickets#destroy_stock'
+  delete 'tickets/:id/stock' => 'tickets#unstock'
   resources :tickets
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do
