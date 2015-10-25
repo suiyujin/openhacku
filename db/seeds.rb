@@ -44,3 +44,6 @@ Ticket.create(make_dummy_data(CSV.read('db/dummy_data/tickets.csv')))
 
 # ticket_levels
 TicketLevel.create(make_dummy_data(CSV.read('db/dummy_data/ticket_levels.csv')))
+
+# keywords_tickets
+KeywordsTicket.create(make_dummy_data(CSV.read('db/dummy_data/keywords_tickets.csv')))
