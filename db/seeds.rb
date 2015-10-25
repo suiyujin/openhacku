@@ -60,3 +60,15 @@ KeywordsTicket.create(dummy_keywords_tickets)
 
 # keywords_tickets
 KeywordsTicket.create(make_dummy_data(CSV.read('db/dummy_data/keywords_tickets.csv')))
+
+# sample keywords_users
+dummy_keywords_users = Array.new
+1.upto(users.size-1) do |user_id|
+  1.upto(10) do |num|
+    dummy_keywords_users << {
+      user_id: user_id,
+      keyword_id: (num * user_id)
+    }
+  end
+end
+KeywordsUser.create(dummy_keywords_users)
