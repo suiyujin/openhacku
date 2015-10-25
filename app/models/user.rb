@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :tickets, dependent: :delete_all
   has_many :bought_tickets, class_name: 'Ticket', foreign_key: 'bought_user_id'
   has_many :stock_tickets, dependent: :delete_all
+  has_many :keywords_users
+  has_many :keywords, through: :keywords_users
 
   # 認証トークンが無い場合は作成
   def ensure_authentication_token
