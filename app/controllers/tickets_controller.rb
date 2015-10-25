@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :buy]
+  skip_load_and_authorize_resource only: [:index, :show, :stock, :buy]
   before_action :set_ticket, only: [:show, :edit, :update, :buy, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
@@ -67,6 +67,17 @@ class TicketsController < ApplicationController
         format.html { render :new }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  # POST /tickets/1/stock.json
+  def stock
+    @stock_ticket = StockTicket.new(ticket_id: params[:id], user_id: current_user.id)
+
+    if @stock_ticket.save
+      render json: { message: 'Ticket was successfully stocked.' }
+    else
+      render json: @stock_ticket.errors, status: :unprocessable_entity
     end
   end
 
