@@ -19,7 +19,7 @@ class TicketsController < ApplicationController
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
-    query = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    query = Ticket.includes(:user, :bought_user, :ticket_levels, :keywords).order_limit_offset(make_order_query, params[:limit], params[:offset])
 
     case params[:filter]
     when 'no_bought' then
