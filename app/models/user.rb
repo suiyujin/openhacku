@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   validates:authentication_token, uniqueness: true, allow_nil: true
   has_many :tickets, dependent: :delete_all
   has_many :bought_tickets, class_name: 'Ticket', foreign_key: 'bought_user_id'
+  has_many :stock_tickets, dependent: :delete_all
 
   # 認証トークンが無い場合は作成
   def ensure_authentication_token

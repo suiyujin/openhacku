@@ -1,10 +1,11 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :buy]
+  skip_load_and_authorize_resource only: [:index, :show, :stock, :buy, :unstock]
   before_action :set_ticket, only: [:show, :edit, :update, :buy, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
+  DEFAULT_SORT_STOCK = 'stock'
   DEFAULT_ORDER = 'd'
   DEFAULT_LIMIT = 10
   DEFAULT_OFFSET = 0
@@ -13,8 +14,8 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    # filterがteachedまたはlearnedの時はuser_idが必要
-    if ['teached', 'learned'].include?(params[:filter]) && params[:user_id].blank?
+    # filterがteachedまたはlearnedまたはstockの時はuser_idが必要
+    if ['teached', 'learned', 'stock'].include?(params[:filter]) && params[:user_id].blank?
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
@@ -28,6 +29,8 @@ class TicketsController < ApplicationController
       query = query.bought_user(params[:user_id])
     when 'learned' then
       query = query.user(params[:user_id]).bought
+    when 'stock' then
+      query = query.no_bought.joins_stock_tickets_where_user(params[:user_id])
     end
 
     @tickets = query
@@ -67,6 +70,17 @@ class TicketsController < ApplicationController
     end
   end
 
+  # POST /tickets/1/stock.json
+  def stock
+    @stock_ticket = StockTicket.new(ticket_id: params[:id], user_id: current_user.id)
+
+    if @stock_ticket.save
+      render json: { message: 'Ticket was successfully stocked.' }
+    else
+      render json: @stock_ticket.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH /tickets/1/buy.json
   def buy
     unless @ticket.user_id == current_user.id || @ticket.bought
@@ -91,6 +105,12 @@ class TicketsController < ApplicationController
     end
   end
 
+  # DELETE /tickets/1/stock.json
+  def unstock
+    StockTicket.find_by(ticket_id: params[:id], user_id: current_user.id).destroy
+    render json: { message: 'Ticket was successfully unstocked.' }
+  end
+
   # DELETE /tickets/1
   # DELETE /tickets/1.json
   def destroy
@@ -113,7 +133,7 @@ class TicketsController < ApplicationController
     end
 
     def set_default_if_no_params
-      params[:sort] ||= DEFAULT_SORT
+      params[:sort] ||= (params[:filter] == 'stock') ? DEFAULT_SORT_STOCK : DEFAULT_SORT
       params[:order] ||= DEFAULT_ORDER
       params[:limit] ||= DEFAULT_LIMIT
       params[:offset] ||= DEFAULT_OFFSET
@@ -121,20 +141,20 @@ class TicketsController < ApplicationController
     end
 
     def make_order_query
-      if params[:sort] == 'create'
-        if params[:order] == 'd'
-          return 'id desc'
-        elsif params[:order] == 'a'
-          return 'id asc'
-        end
-      end
-
       case params[:order]
       when 'd' then
-        order_query = "#{params[:sort]} desc"
+        order_query = ' desc'
       when 'a' then
-        order_query = "#{params[:sort]} asc"
+        order_query = ' asc'
       end
-      order_query += ', id desc'
+
+      case params[:sort]
+      when 'create' then
+        'id' + order_query
+      when 'stock' then
+        'stock_tickets.id' + order_query
+      else
+        params[:sort] + order_query + ', id desc'
+      end
     end
 end

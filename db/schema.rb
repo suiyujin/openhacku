@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151023051956) do
+ActiveRecord::Schema.define(version: 20151025013551) do
+
+  create_table "stock_tickets", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4, null: false
+    t.integer  "ticket_id",  limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "stock_tickets", ["ticket_id"], name: "index_stock_tickets_on_ticket_id", using: :btree
+  add_index "stock_tickets", ["user_id", "ticket_id"], name: "index_stock_tickets_on_user_id_and_ticket_id", unique: true, using: :btree
+  add_index "stock_tickets", ["user_id"], name: "index_stock_tickets_on_user_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
     t.string   "title",          limit: 255,                   null: false
@@ -56,5 +67,7 @@ ActiveRecord::Schema.define(version: 20151023051956) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "stock_tickets", "tickets"
+  add_foreign_key "stock_tickets", "users"
   add_foreign_key "tickets", "users"
 end
