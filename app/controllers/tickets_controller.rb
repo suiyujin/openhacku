@@ -5,6 +5,7 @@ class TicketsController < ApplicationController
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
+  DEFAULT_SORT_STOCK = 'stock'
   DEFAULT_ORDER = 'd'
   DEFAULT_LIMIT = 10
   DEFAULT_OFFSET = 0
@@ -115,7 +116,7 @@ class TicketsController < ApplicationController
     end
 
     def set_default_if_no_params
-      params[:sort] ||= DEFAULT_SORT
+      params[:sort] ||= (params[:filter] == 'stock') ? DEFAULT_SORT_STOCK : DEFAULT_SORT
       params[:order] ||= DEFAULT_ORDER
       params[:limit] ||= DEFAULT_LIMIT
       params[:offset] ||= DEFAULT_OFFSET
@@ -123,20 +124,20 @@ class TicketsController < ApplicationController
     end
 
     def make_order_query
-      if params[:sort] == 'create'
-        if params[:order] == 'd'
-          return 'id desc'
-        elsif params[:order] == 'a'
-          return 'id asc'
-        end
-      end
-
       case params[:order]
       when 'd' then
-        order_query = "#{params[:sort]} desc"
+        order_query = ' desc'
       when 'a' then
-        order_query = "#{params[:sort]} asc"
+        order_query = ' asc'
       end
-      order_query += ', id desc'
+
+      case params[:sort]
+      when 'create' then
+        'id' + order_query
+      when 'stock' then
+        'stock_tickets.id' + order_query
+      else
+        params[:sort] + order_query + ', id desc'
+      end
     end
 end
