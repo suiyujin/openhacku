@@ -61,6 +61,8 @@ class TicketsController < ApplicationController
 
     respond_to do |format|
       if @ticket.save
+        levels = params[:ticket][:levels].map { |level| Hash[*['level', 'ticket_id'].zip([level, @ticket.id]).flatten] }
+        TicketLevel.create(levels)
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
       else
@@ -96,6 +98,11 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
+        if params[:ticket][:levels].present?
+          TicketLevel.where(ticket_id: @ticket.id).each(&:destroy)
+          levels = params[:ticket][:levels].map { |level| Hash[*['level', 'ticket_id'].zip([level, @ticket.id]).flatten] }
+          TicketLevel.create(levels)
+        end
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
@@ -129,7 +136,7 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id, :sex, :review_min, :level)
+      params.require(:ticket).permit(:title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id, :sex, :review_min)
     end
 
     def set_default_if_no_params
