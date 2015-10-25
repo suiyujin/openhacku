@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :stock, :buy]
+  skip_load_and_authorize_resource only: [:index, :show, :stock, :buy, :destroy_stock]
   before_action :set_ticket, only: [:show, :edit, :update, :buy, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
@@ -103,6 +103,12 @@ class TicketsController < ApplicationController
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # DELETE /tickets/1/stock.json
+  def destroy_stock
+    StockTicket.find_by(ticket_id: params[:id], user_id: current_user.id).destroy
+    render json: { message: 'Ticket was successfully unstocked.' }
   end
 
   # DELETE /tickets/1
