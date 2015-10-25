@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025013551) do
+ActiveRecord::Schema.define(version: 20151025042043) do
+
+  create_table "keywords", force: :cascade do |t|
+    t.string "keyword", limit: 255, null: false
+  end
+
+  add_index "keywords", ["keyword"], name: "index_keywords_on_keyword", unique: true, using: :btree
 
   create_table "stock_tickets", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
