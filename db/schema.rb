@@ -11,13 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025042043) do
+ActiveRecord::Schema.define(version: 20151025080402) do
 
-  create_table "keywords", force: :cascade do |t|
-    t.string "keyword", limit: 255, null: false
+  create_table "categories", force: :cascade do |t|
+    t.string "category", limit: 255, null: false
   end
 
-  add_index "keywords", ["keyword"], name: "index_keywords_on_keyword", unique: true, using: :btree
+  add_index "categories", ["category"], name: "index_categories_on_category", unique: true, using: :btree
+
+  create_table "keywords", force: :cascade do |t|
+    t.string  "keyword",     limit: 255, null: false
+    t.integer "category_id", limit: 4,   null: false
+  end
+
+  add_index "keywords", ["category_id"], name: "index_keywords_on_category_id", using: :btree
+  add_index "keywords", ["keyword"], name: "index_keywords_on_keyword", using: :btree
 
   create_table "stock_tickets", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
@@ -73,6 +81,7 @@ ActiveRecord::Schema.define(version: 20151025042043) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "keywords", "categories"
   add_foreign_key "stock_tickets", "tickets"
   add_foreign_key "stock_tickets", "users"
   add_foreign_key "tickets", "users"
