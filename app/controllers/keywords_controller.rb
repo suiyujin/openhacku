@@ -1,5 +1,8 @@
 class KeywordsController < ApplicationController
   def index
-    @keywords = Keyword.includes(:category).all
+    query = Keyword.includes(:category)
+    query = query.category(params[:category_id]) if params[:category_id].present?
+
+    @keywords = query
   end
 end
