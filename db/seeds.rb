@@ -7,9 +7,19 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'csv'
 
+def make_dummy_data(data)
+  data[1..-1].map { |d| Hash[*data[0].zip(d).flatten] }
+end
+
+# categories
+Category.create(make_dummy_data(CSV.read('db/dummy_data/categories.csv')))
+
+# keywords
+Keyword.create(make_dummy_data(CSV.read('db/dummy_data/keywords.csv')))
+
 # users
 users = CSV.read('db/dummy_data/users.csv')
-User.create(users[1..-1].map { |user| Hash[*users[0].zip(user).flatten] })
+User.create(make_dummy_data(users))
 
 # sample tickets
 dummy_tickets = Array.new
@@ -31,5 +41,4 @@ end
 Ticket.create(dummy_tickets)
 
 # tickets
-tickets = CSV.read('db/dummy_data/tickets.csv')
-Ticket.create(tickets[1..-1].map { |ticket| Hash[*tickets[0].zip(ticket).flatten] })
+Ticket.create(make_dummy_data(CSV.read('db/dummy_data/tickets.csv')))
