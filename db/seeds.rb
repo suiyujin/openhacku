@@ -34,7 +34,6 @@ dummy_tickets = Array.new
       user_id: user_id,
       sex: [0, 1, 2].sample,
       review_min: Random.rand(0.0..5.0).round(1),
-      level: [0, 1, 2].sample
     }
   end
 end
@@ -42,3 +41,6 @@ Ticket.create(dummy_tickets)
 
 # tickets
 Ticket.create(make_dummy_data(CSV.read('db/dummy_data/tickets.csv')))
+
+# ticket_levels
+TicketLevel.create(make_dummy_data(CSV.read('db/dummy_data/ticket_levels.csv')))
