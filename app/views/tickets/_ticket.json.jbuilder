@@ -7,3 +7,9 @@ json.user do
   json.name ticket.user.name
   json.profile_img_url ticket.user.profile_img_url
 end
+json.keywords do
+  json.array!(ticket.keywords) do |keyword|
+    json.id keyword.id
+    json.name keyword.name
+  end
+end
