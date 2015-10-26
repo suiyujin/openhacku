@@ -35,6 +35,9 @@ gem 'devise'
 gem 'cancancan'
 gem 'responders', '~> 2.0'
 
+# for jbuilder
+gem 'yajl-ruby'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   #gem 'byebug'
