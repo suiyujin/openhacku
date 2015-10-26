@@ -61,6 +61,7 @@ class TicketsController < ApplicationController
 
     respond_to do |format|
       if @ticket.save
+        # create ticket_levels
         levels = params[:ticket][:levels].map { |level| Hash[*['level', 'ticket_id'].zip([level, @ticket.id]).flatten] }
         TicketLevel.create(levels)
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
