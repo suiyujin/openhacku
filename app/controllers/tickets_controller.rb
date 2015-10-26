@@ -110,6 +110,14 @@ class TicketsController < ApplicationController
           levels = params[:ticket][:levels].map { |level| Hash[*['level', 'ticket_id'].zip([level, @ticket.id]).flatten] }
           TicketLevel.create(levels)
         end
+
+        # update keywords_tickets
+        if params[:ticket][:keywords].present?
+          KeywordsTicket.where(ticket_id: @ticket.id).each(&:destroy)
+          keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
+          KeywordsTicket.create(keywords)
+        end
+
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
