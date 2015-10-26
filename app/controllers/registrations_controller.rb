@@ -12,7 +12,8 @@ class RegistrationsController < Devise::RegistrationsController
       id: resource.id,
       email: resource.email,
       name: resource.name,
-      introduction: resource.introduction
+      introduction: resource.introduction,
+      keywords: resource.keywords
     }
   end
 end
