@@ -3,7 +3,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :bought_user, class_name: 'User'
   has_many :stock_tickets, dependent: :delete_all
   has_many :ticket_levels, dependent: :delete_all
-  has_many :keywords_tickets
+  has_many :keywords_tickets, dependent: :delete_all
   has_many :keywords, through: :keywords_tickets
 
   scope :user, ->(user_id) { where(user_id: user_id) }
