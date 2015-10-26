@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025112034) do
+ActiveRecord::Schema.define(version: 20151026072919) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20151025112034) do
     t.integer "ticket_id",  limit: 4, null: false
   end
 
+  add_index "keywords_tickets", ["keyword_id", "ticket_id"], name: "index_keywords_tickets_on_keyword_id_and_ticket_id", unique: true, using: :btree
   add_index "keywords_tickets", ["keyword_id"], name: "index_keywords_tickets_on_keyword_id", using: :btree
   add_index "keywords_tickets", ["ticket_id"], name: "index_keywords_tickets_on_ticket_id", using: :btree
 
@@ -40,6 +41,7 @@ ActiveRecord::Schema.define(version: 20151025112034) do
     t.integer "user_id",    limit: 4, null: false
   end
 
+  add_index "keywords_users", ["keyword_id", "user_id"], name: "index_keywords_users_on_keyword_id_and_user_id", unique: true, using: :btree
   add_index "keywords_users", ["keyword_id"], name: "index_keywords_users_on_keyword_id", using: :btree
   add_index "keywords_users", ["user_id"], name: "index_keywords_users_on_user_id", using: :btree
 
