@@ -66,7 +66,7 @@ class TicketsController < ApplicationController
         TicketLevel.create(levels)
 
         # create keywords_tickets
-        keywords = params[:ticket][:keywords].map { |keyword| Hash[*['keyword_id', 'ticket_id'].zip([keyword, @ticket.id]).flatten] }
+        keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
         KeywordsTicket.create(keywords)
 
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
