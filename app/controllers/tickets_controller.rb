@@ -104,6 +104,7 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
+        # update ticket_levels
         if params[:ticket][:levels].present?
           TicketLevel.where(ticket_id: @ticket.id).each(&:destroy)
           levels = params[:ticket][:levels].map { |level| Hash[*['level', 'ticket_id'].zip([level, @ticket.id]).flatten] }
