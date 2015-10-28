@@ -1,4 +1,4 @@
-json.extract! ticket, :id, :title, :body, :time, :price, :place, :sex, :review_min
+json.extract! ticket, :id, :title, :body, :time, :price, :place
 json.levels ticket.ticket_levels.map(&:level)
 json.created_at ticket.created_at.strftime("%Y.%m.%d %H:%M:%S")
 json.updated_at ticket.updated_at.strftime("%Y.%m.%d %H:%M:%S")
