@@ -161,11 +161,11 @@ class TicketsController < ApplicationController
 
       case params[:sort]
       when 'create' then
-        'id' + order_query
+        'tickets.id' + order_query
       when 'stock' then
         'stock_tickets.id' + order_query
       else
-        params[:sort] + order_query + ', id desc'
+        params[:sort] + order_query + ', tickets.id desc'
       end
     end
 end
