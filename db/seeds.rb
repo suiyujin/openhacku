@@ -31,7 +31,8 @@ dummy_tickets = Array.new
       time: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0].sample,
       price: [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].sample,
       place: ["オンライン", "新宿", "渋谷", "つくば"].sample,
-      user_id: user_id
+      user_id: user_id,
+      beginner: [true, false].sample
     }
   end
 end
