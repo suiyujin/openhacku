@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       #  KeywordsUser.create(keywords)
       #end
 
-      render json: @user, status: :ok
+      render "show", :formats => [:json], :handlers => [:jbuilder]
     else
       render json: @user.errors, status: :unprocessable_entity
     end
