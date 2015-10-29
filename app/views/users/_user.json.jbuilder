@@ -1,4 +1,4 @@
-json.extract! user, :id, :email, :username, :last_name, :first_name, :sex, :introduction
+json.extract! user, :id, :email, :username, :last_name, :first_name, :sex, :introduction, :profile_img_url, :header_img_url
 json.tags do
   json.array!(user.keywords) do |keyword|
     json.id keyword.id
