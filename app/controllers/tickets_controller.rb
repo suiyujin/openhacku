@@ -62,7 +62,7 @@ class TicketsController < ApplicationController
     respond_to do |format|
       if @ticket.save
         # create keywords_tickets
-        keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
+        keywords = params[:ticket][:tags].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
         KeywordsTicket.create(keywords)
 
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
@@ -101,9 +101,9 @@ class TicketsController < ApplicationController
     respond_to do |format|
       if @ticket.update(ticket_params)
         # update keywords_tickets
-        if params[:ticket][:keywords].present?
+        if params[:ticket][:tags].present?
           KeywordsTicket.where(ticket_id: @ticket.id).each(&:destroy)
-          keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
+          keywords = params[:ticket][:tags].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
           KeywordsTicket.create(keywords)
         end
 
