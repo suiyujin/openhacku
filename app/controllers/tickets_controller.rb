@@ -21,6 +21,9 @@ class TicketsController < ApplicationController
 
     query = Ticket.includes(:user, :bought_user, :keywords).order_limit_offset(make_order_query, params[:limit], params[:offset])
 
+    # 性別でフィルタリング
+    query = query.joins_users_where_sex(params[:sex]) if params[:sex].present?
+
     case params[:filter]
     when 'no_bought' then
       query = query.no_bought

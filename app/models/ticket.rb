@@ -10,5 +10,6 @@ class Ticket < ActiveRecord::Base
   scope :bought, -> { where(bought: true) }
   scope :no_bought, -> { where(bought: false) }
   scope :joins_stock_tickets_where_user, ->(user_id) { joins(:stock_tickets).where(stock_tickets: { user_id: user_id }) }
+  scope :joins_users_where_sex, ->(sex) { joins(:user).where(users: { sex: sex }) }
   scope :order_limit_offset, ->(order, limit, offset) { order(order).limit(limit).offset(offset) }
 end
