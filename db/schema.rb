@@ -27,6 +27,24 @@ ActiveRecord::Schema.define(version: 20151029060803) do
   add_index "keywords", ["category_id"], name: "index_keywords_on_category_id", using: :btree
   add_index "keywords", ["name"], name: "index_keywords_on_name", using: :btree
 
+  create_table "keywords_tickets", force: :cascade do |t|
+    t.integer "keyword_id", limit: 4, null: false
+    t.integer "ticket_id",  limit: 4, null: false
+  end
+
+  add_index "keywords_tickets", ["keyword_id", "ticket_id"], name: "index_keywords_tickets_on_keyword_id_and_ticket_id", unique: true, using: :btree
+  add_index "keywords_tickets", ["keyword_id"], name: "index_keywords_tickets_on_keyword_id", using: :btree
+  add_index "keywords_tickets", ["ticket_id"], name: "index_keywords_tickets_on_ticket_id", using: :btree
+
+  create_table "keywords_users", force: :cascade do |t|
+    t.integer "keyword_id", limit: 4, null: false
+    t.integer "user_id",    limit: 4, null: false
+  end
+
+  add_index "keywords_users", ["keyword_id", "user_id"], name: "index_keywords_users_on_keyword_id_and_user_id", unique: true, using: :btree
+  add_index "keywords_users", ["keyword_id"], name: "index_keywords_users_on_keyword_id", using: :btree
+  add_index "keywords_users", ["user_id"], name: "index_keywords_users_on_user_id", using: :btree
+
   create_table "stock_tickets", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
     t.integer  "ticket_id",  limit: 4, null: false
@@ -80,6 +98,10 @@ ActiveRecord::Schema.define(version: 20151029060803) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "keywords", "categories"
+  add_foreign_key "keywords_tickets", "keywords"
+  add_foreign_key "keywords_tickets", "tickets"
+  add_foreign_key "keywords_users", "keywords"
+  add_foreign_key "keywords_users", "users"
   add_foreign_key "stock_tickets", "tickets"
   add_foreign_key "stock_tickets", "users"
   add_foreign_key "tickets", "users"

@@ -218,6 +218,7 @@ GEM
     uniform_notifier (1.9.0)
     warden (1.2.3)
       rack (>= 1.0)
+    yajl-ruby (1.2.1)
     yard (0.8.7.6)
 
 PLATFORMS
@@ -256,6 +257,7 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   unicorn
+  yajl-ruby
 
 BUNDLED WITH
    1.10.6

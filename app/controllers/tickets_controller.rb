@@ -19,7 +19,7 @@ class TicketsController < ApplicationController
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
-    query = Ticket.includes(:user, :bought_user).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    query = Ticket.includes(:user, :bought_user, :keywords).order_limit_offset(make_order_query, params[:limit], params[:offset])
 
     case params[:filter]
     when 'no_bought' then
@@ -61,6 +61,10 @@ class TicketsController < ApplicationController
 
     respond_to do |format|
       if @ticket.save
+        # create keywords_tickets
+        keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
+        KeywordsTicket.create(keywords)
+
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
       else
@@ -96,6 +100,13 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
+        # update keywords_tickets
+        if params[:ticket][:keywords].present?
+          KeywordsTicket.where(ticket_id: @ticket.id).each(&:destroy)
+          keywords = params[:ticket][:keywords].map { |keyword_id| Hash[*['keyword_id', 'ticket_id'].zip([keyword_id, @ticket.id]).flatten] }
+          KeywordsTicket.create(keywords)
+        end
+
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
