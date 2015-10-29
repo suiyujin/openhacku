@@ -1,7 +1,7 @@
-email,password,password_confirmation,name,introduction
-suiyujin04@gmail.com,password,password,いっぺー,よろしく
-woodykoh.t@gmail.com,password,password,たかちゃん,こんにちは
-lisantahat@gmail.com,password,password,りーちゃん,おはよう
-ckmr1208@gmail.com,password,password,ちかちゃん,はろー
-tmkueks19@gmail.com,password,password,うえちゃん,こんちくわ
-orleika.net@gmail.com,password,password,やっすー,こんばんは
+email,password,password_confirmation,username,introduction,last_name,first_name,sex
+suiyujin04@gmail.com,password,password,いっぺー,よろしく,正木,一平,0
+woodykoh.t@gmail.com,password,password,たかちゃん,こんにちは,高須,航,0
+lisantahat@gmail.com,password,password,りーちゃん,おはよう,田中,里紗,1
+ckmr1208@gmail.com,password,password,ちかちゃん,はろー,村上,知佳,1
+tmkueks19@gmail.com,password,password,うえちゃん,こんちくわ,植草,智輝,0
+orleika.net@gmail.com,password,password,やっすー,こんばんは,安田,昂樹,0
