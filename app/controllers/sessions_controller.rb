@@ -13,7 +13,10 @@ class SessionsController < Devise::SessionsController
       id: resource.id,
       email: resource.email,
       authentication_token: resource.authentication_token,
-      name: resource.name,
+      last_name: resource.last_name,
+      first_name: resource.first_name,
+      username: resource.username,
+      sex: resource.sex,
       teached_num: teached_num,
       learned_num: learned_num
     }
