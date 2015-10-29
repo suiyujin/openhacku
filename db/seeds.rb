@@ -28,12 +28,11 @@ dummy_tickets = Array.new
     dummy_tickets << {
       title: "title#{user_id}#{num}",
       body: "body#{user_id}#{num}",
-      time: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0].sample,
-      price: [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].sample,
+      time: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0].sample,
+      price: [300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500].sample,
       place: ["オンライン", "新宿", "渋谷", "つくば"].sample,
       user_id: user_id,
-      sex: [0, 1, 2].sample,
-      review_min: Random.rand(0.0..5.0).round(1),
+      beginner: [true, false].sample
     }
   end
 end
@@ -41,6 +40,3 @@ Ticket.create(dummy_tickets)
 
 # tickets
 Ticket.create(make_dummy_data(CSV.read('db/dummy_data/tickets.csv')))
-
-# ticket_levels
-TicketLevel.create(make_dummy_data(CSV.read('db/dummy_data/ticket_levels.csv')))
