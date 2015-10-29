@@ -3,6 +3,7 @@ class Ability
 
   def initialize(user)
     can :manage, Ticket, user: user if user
+    can :manage, User, id: user.id if user
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

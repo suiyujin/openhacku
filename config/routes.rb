@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   patch 'tickets/:id/buy' => 'tickets#buy'
   delete 'tickets/:id/stock' => 'tickets#unstock'
   resources :tickets
+
+  patch 'users/:id' => 'users#update'
+  delete 'users/:id' => 'users#destroy'
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do
     post 'login' => 'sessions#create', :as => :user_session
