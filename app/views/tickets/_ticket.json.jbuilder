@@ -5,4 +5,5 @@ json.user do
   json.id ticket.user.id
   json.name ticket.user.name
   json.profile_img_url ticket.user.profile_img_url
+  json.header_img_url ticket.user.header_img_url
 end
