@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'keywords' => 'keywords#index'
+  get 'tags' => 'keywords#index'
   get 'categories' => 'categories#index'
 
   get 'tickets/my_list' => 'tickets#my_list'

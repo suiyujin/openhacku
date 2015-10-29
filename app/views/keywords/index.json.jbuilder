@@ -1,4 +1,4 @@
-json.keywords do
+json.tags do
   json.array! @keywords do |keyword|
     json.extract! keyword, :id, :name
     json.category do
