@@ -4,6 +4,7 @@ class Ticket < ActiveRecord::Base
   has_many :stock_tickets, dependent: :delete_all
   has_many :keywords_tickets, dependent: :delete_all
   has_many :keywords, through: :keywords_tickets
+  has_one :review
 
   scope :user, ->(user_id) { where(user_id: user_id) }
   scope :bought_user, ->(bought_user_id) { where(bought_user_id: bought_user_id) }
