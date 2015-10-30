@@ -13,4 +13,6 @@ class Ticket < ActiveRecord::Base
   scope :joins_stock_tickets_where_user, ->(user_id) { joins(:stock_tickets).where(stock_tickets: { user_id: user_id }) }
   scope :joins_users_where_sex, ->(sex) { joins(:user).where(users: { sex: sex }) }
   scope :order_limit_offset, ->(order, limit, offset) { order(order).limit(limit).offset(offset) }
+  scope :search, ->(query) { where("tickets.title LIKE '%#{query}%' OR tickets.body LIKE '%#{query}%'") }
+  scope :search_with_in, ->(keyword_ticket_ids, query) { where("tickets.id IN (#{keyword_ticket_ids}) OR tickets.title LIKE '%#{query}%' OR tickets.body LIKE '%#{query}%'") }
 end

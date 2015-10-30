@@ -30,6 +30,12 @@ class TicketsController < ApplicationController
       query = query.ticket_ids(ticket_ids)
     end
 
+    # クエリで検索
+    if params[:q].present?
+      keyword_ticket_ids = KeywordsTicket.select(:ticket_id).joins(:keyword).where("keywords.name LIKE '%#{params[:q]}%'").map(&:ticket_id).uniq
+      query = keyword_ticket_ids.blank? ? query.search(params[:q]) : query.search_with_in(keyword_ticket_ids.join(','), params[:q])
+    end
+
     case params[:filter]
     when 'no_bought' then
       query = query.no_bought
