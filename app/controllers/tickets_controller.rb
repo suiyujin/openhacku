@@ -19,10 +19,16 @@ class TicketsController < ApplicationController
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
-    query = Ticket.includes(:user, :bought_user, :keywords).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    query = Ticket.includes(:user, :bought_user, :keywords, :keywords_tickets).order_limit_offset(make_order_query, params[:limit], params[:offset])
 
     # 性別でフィルタリング
     query = query.joins_users_where_sex(params[:sex]) if params[:sex].present?
+
+    # タグでフィルタリング
+    if params[:tag_id]
+      ticket_ids = KeywordsTicket.select(:ticket_id).where(keyword_id: params[:tag_id]).map(&:ticket_id)
+      query = query.ticket_ids(ticket_ids)
+    end
 
     case params[:filter]
     when 'no_bought' then
