@@ -19,7 +19,22 @@ class TicketsController < ApplicationController
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
-    query = Ticket.includes(:user, :bought_user, :keywords).order_limit_offset(make_order_query, params[:limit], params[:offset])
+    query = Ticket.includes(:user, :bought_user, :keywords, :keywords_tickets).order_limit_offset(make_order_query, params[:limit], params[:offset])
+
+    # 性別でフィルタリング
+    query = query.joins_users_where_sex(params[:sex]) if params[:sex].present?
+
+    # タグでフィルタリング
+    if params[:tag_id]
+      ticket_ids = KeywordsTicket.select(:ticket_id).where(keyword_id: params[:tag_id]).map(&:ticket_id)
+      query = query.ticket_ids(ticket_ids)
+    end
+
+    # クエリで検索
+    if params[:q].present?
+      keyword_ticket_ids = KeywordsTicket.select(:ticket_id).joins(:keyword).where("keywords.name LIKE '%#{params[:q]}%'").map(&:ticket_id).uniq
+      query = keyword_ticket_ids.blank? ? query.search(params[:q]) : query.search_with_in(keyword_ticket_ids.join(','), params[:q])
+    end
 
     case params[:filter]
     when 'no_bought' then
@@ -161,11 +176,11 @@ class TicketsController < ApplicationController
 
       case params[:sort]
       when 'create' then
-        'id' + order_query
+        'tickets.id' + order_query
       when 'stock' then
         'stock_tickets.id' + order_query
       else
-        params[:sort] + order_query + ', id desc'
+        params[:sort] + order_query + ', tickets.id desc'
       end
     end
 end
