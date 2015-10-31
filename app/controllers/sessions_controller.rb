@@ -9,7 +9,7 @@ class SessionsController < Devise::SessionsController
     teached_num = Ticket.where(bought_user_id: resource.id).count
     learned_num = resource.tickets.where(bought: true).count
     scores = resource.review_users_of_to_user.map(&:score)
-    review_ave = scores.inject(&:+) / scores.count.to_f
+    review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f)
 
     render json: {
       id: resource.id,
