@@ -39,6 +39,16 @@ class TicketsController < ApplicationController
     # 場所でフィルタリング
     query = query.send(params[:place]) if params[:place].present?
 
+    # スキルでフィルタリング
+    if params[:beginner].present?
+      case params[:beginner]
+      when '0' then
+        query = query.no_beginner
+      when '1' then
+        query = query.beginner
+      end
+    end
+
     case params[:filter]
     when 'no_bought' then
       query = query.no_bought

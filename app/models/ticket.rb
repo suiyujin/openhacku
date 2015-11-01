@@ -10,6 +10,8 @@ class Ticket < ActiveRecord::Base
   scope :bought_user, ->(bought_user_id) { where(bought_user_id: bought_user_id) }
   scope :bought, -> { where(bought: true) }
   scope :no_bought, -> { where(bought: false) }
+  scope :beginner, -> { where(beginner: true) }
+  scope :no_beginner, -> { where(beginner: false) }
   scope :online, -> { where('skype OR hangout') }
   scope :offline, -> { where.not(offline_place: nil) }
   scope :ticket_ids, ->(ticket_ids) { where(id: ticket_ids) }
