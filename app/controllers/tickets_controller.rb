@@ -131,7 +131,7 @@ class TicketsController < ApplicationController
   # PATCH /tickets/1/select_teacher.json
   def select_teacher
     unless @ticket.bought
-      @ticket.update_attributes(bought: true, bought_user_id: params[:bought_user_id])
+      @ticket.update_attributes(bought: true, bought_user_id: params[:teacher_id])
       render json: { message: 'Ticket was successfully bought.' }
     else
       render json: @ticket.errors, status: :unprocessable_entity
