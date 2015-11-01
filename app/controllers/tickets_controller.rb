@@ -48,6 +48,7 @@ class TicketsController < ApplicationController
       query = query.no_bought.joins_stock_tickets_where_user(params[:user_id])
     end
 
+
     @tickets = query
   end
 
@@ -177,6 +178,9 @@ class TicketsController < ApplicationController
       case params[:sort]
       when 'create' then
         'tickets.id' + order_query
+      when 'popular' then
+        popular_ticket_ids_asc = Ticket.joins(:stock_tickets).group('stock_tickets.ticket_id').order('count_stock_tickets_ticket_id asc, tickets.id asc').count('stock_tickets.ticket_id').keys
+        ActiveRecord::Base.send(:sanitize_sql_array, ["field(id ,?) desc",popular_ticket_ids_asc])
       when 'stock' then
         'stock_tickets.id' + order_query
       else
