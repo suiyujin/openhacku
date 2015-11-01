@@ -51,7 +51,6 @@ class TicketsController < ApplicationController
       query = query.no_bought.joins_stock_tickets_where_user(params[:user_id])
     end
 
-
     @tickets = query
   end
 
