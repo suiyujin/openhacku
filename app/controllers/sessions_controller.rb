@@ -8,6 +8,8 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, opts = {})
     teached_num = Ticket.where(bought_user_id: resource.id).count
     learned_num = resource.tickets.where(bought: true).count
+    scores = resource.review_users_of_to_user.map(&:score)
+    review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
 
     render json: {
       id: resource.id,
@@ -20,6 +22,7 @@ class SessionsController < Devise::SessionsController
       introduction: resource.introduction,
       profile_img_url: resource.profile_img_url,
       header_img_url: resource.header_img_url,
+      review_ave: review_ave,
       teached_num: teached_num,
       learned_num: learned_num,
       tags: resource.keywords

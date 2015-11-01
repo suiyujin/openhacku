@@ -10,6 +10,8 @@ class UsersController < ApplicationController
       #  keywords = params[:user][:tags].map { |keyword_id| Hash[*['keyword_id', 'user_id'].zip([keyword_id, @user.id]).flatten] }
       #  KeywordsUser.create(keywords)
       #end
+      scores = @user.review_users_of_to_user.map(&:score)
+      @review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
 
       render "show", :formats => [:json], :handlers => [:jbuilder]
     else

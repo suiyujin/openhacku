@@ -12,6 +12,12 @@ class User < ActiveRecord::Base
   has_many :keywords_users, dependent: :delete_all
   has_many :keywords, through: :keywords_users
 
+  # review association
+  has_many :review_users_of_to_user, class_name: 'Review', foreign_key: 'to_user_id', dependent: :delete_all
+  has_many :reviews_of_to_user, through: :review_users_to_user, source: 'from_user_review'
+  has_many :review_users_of_from_user, class_name: 'Review', foreign_key: 'from_user_id', dependent: :delete_all
+  has_many :reviews_of_from_user, through: :review_users_from_user, source: 'to_user_review'
+
   # 認証トークンが無い場合は作成
   def ensure_authentication_token
     self.authentication_token || generate_authentication_token

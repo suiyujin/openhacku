@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029104837) do
+ActiveRecord::Schema.define(version: 20151030075600) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -44,6 +44,20 @@ ActiveRecord::Schema.define(version: 20151029104837) do
   add_index "keywords_users", ["keyword_id", "user_id"], name: "index_keywords_users_on_keyword_id_and_user_id", unique: true, using: :btree
   add_index "keywords_users", ["keyword_id"], name: "index_keywords_users_on_keyword_id", using: :btree
   add_index "keywords_users", ["user_id"], name: "index_keywords_users_on_user_id", using: :btree
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer  "score",        limit: 4,   null: false
+    t.string   "comment",      limit: 255
+    t.integer  "from_user_id", limit: 4,   null: false
+    t.integer  "to_user_id",   limit: 4,   null: false
+    t.integer  "ticket_id",    limit: 4,   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "reviews", ["from_user_id"], name: "fk_rails_d4fa96a364", using: :btree
+  add_index "reviews", ["ticket_id"], name: "index_reviews_on_ticket_id", using: :btree
+  add_index "reviews", ["to_user_id"], name: "fk_rails_50805f2673", using: :btree
 
   create_table "stock_tickets", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
@@ -105,6 +119,9 @@ ActiveRecord::Schema.define(version: 20151029104837) do
   add_foreign_key "keywords_tickets", "tickets"
   add_foreign_key "keywords_users", "keywords"
   add_foreign_key "keywords_users", "users"
+  add_foreign_key "reviews", "tickets"
+  add_foreign_key "reviews", "users", column: "from_user_id"
+  add_foreign_key "reviews", "users", column: "to_user_id"
   add_foreign_key "stock_tickets", "tickets"
   add_foreign_key "stock_tickets", "users"
   add_foreign_key "tickets", "users"

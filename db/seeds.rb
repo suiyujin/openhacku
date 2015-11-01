@@ -75,3 +75,7 @@ dummy_keywords_users = Array.new
 end
 KeywordsUser.create(dummy_keywords_users)
 p 'sample keywords_usres created.'
+
+# reviews
+Review.create(make_dummy_data(CSV.read('db/dummy_data/reviews.csv')))
+p 'reviews created.'
