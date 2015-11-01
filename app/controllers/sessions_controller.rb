@@ -8,6 +8,8 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, opts = {})
     teached_num = Ticket.where(bought_user_id: resource.id).count
     learned_num = resource.tickets.where(bought: true).count
+
+    # 評価の平均値を計算
     scores = resource.review_users_of_to_user.map(&:score)
     review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
 
