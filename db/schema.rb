@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101100414) do
+ActiveRecord::Schema.define(version: 20151101160051) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20151101100414) do
     t.datetime "updated_at",                                   null: false
     t.boolean  "beginner",                     default: false, null: false
     t.boolean  "skype",                        default: false, null: false
-    t.boolean  "hangout",                      default: false, null: false
+    t.boolean  "hangouts",                     default: false, null: false
   end
 
   add_index "tickets", ["bought_user_id"], name: "index_tickets_on_bought_user_id", using: :btree
