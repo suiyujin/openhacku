@@ -36,6 +36,9 @@ class TicketsController < ApplicationController
       query = keyword_ticket_ids.blank? ? query.search(params[:q]) : query.search_with_in(keyword_ticket_ids.join(','), params[:q])
     end
 
+    # 場所でフィルタリング
+    query = query.send(params[:place]) if params[:place].present?
+
     case params[:filter]
     when 'no_bought' then
       query = query.no_bought
