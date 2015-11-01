@@ -94,3 +94,8 @@ dummy_stock_tickets = Array.new
 end
 StockTicket.create(dummy_stock_tickets)
 p 'sample stock_tickets created.'
+
+# ticket_candidates
+TicketCandidate.create(make_dummy_data(CSV.read('db/dummy_data/ticket_candidates.csv')))
+p 'ticket_candidates created.'
+
