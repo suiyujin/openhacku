@@ -1,4 +1,4 @@
-json.extract! ticket, :id, :title, :body, :time, :price, :skype, :hangout, :offline_place, :beginner
+json.extract! ticket, :id, :title, :body, :time, :price, :skype, :hangouts, :offline_place, :beginner
 json.stocked_num ticket.stock_tickets.count
 json.created_at ticket.created_at.strftime("%Y.%m.%d %H:%M:%S")
 json.updated_at ticket.updated_at.strftime("%Y.%m.%d %H:%M:%S")
