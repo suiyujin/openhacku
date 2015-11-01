@@ -204,6 +204,9 @@ class TicketsController < ApplicationController
       when 'popular' then
         popular_ticket_ids_asc = StockTicket.group(:ticket_id).order('count_ticket_id asc, ticket_id asc').count(:ticket_id).keys
         ActiveRecord::Base.send(:sanitize_sql_array, ["field(id,?) desc", popular_ticket_ids_asc])
+      when 'noticed' then
+        noticed_ticket_ids_asc = TicketCandidate.group(:ticket_id).order('count_ticket_id asc, ticket_id asc').count(:ticket_id).keys
+        ActiveRecord::Base.send(:sanitize_sql_array, ["field(id,?) desc", noticed_ticket_ids_asc])
       when 'stock' then
         'stock_tickets.id' + order_query
       else
