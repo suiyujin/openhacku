@@ -10,6 +10,12 @@ class UsersController < ApplicationController
       #  keywords = params[:user][:tags].map { |keyword_id| Hash[*['keyword_id', 'user_id'].zip([keyword_id, @user.id]).flatten] }
       #  KeywordsUser.create(keywords)
       #end
+
+      @teached_num = Ticket.where(bought_user_id: @user.id).count
+      @learned_num = @user.tickets.where(bought: true).count
+      @stock_num = @user.stock_tickets.count
+
+      # 評価の平均値
       scores = @user.review_users_of_to_user.map(&:score)
       @review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
 
