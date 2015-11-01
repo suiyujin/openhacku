@@ -33,7 +33,9 @@ dummy_tickets = Array.new
       body: "body#{user_id}#{num}",
       time: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0].sample,
       price: [300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500].sample,
-      place: ["オンライン", "新宿", "渋谷", "つくば"].sample,
+      skype: [true, false].sample,
+      hangout: [true, false].sample,
+      offline_place: ["新宿", "渋谷", "つくば"].sample,
       user_id: user_id,
       beginner: [true, false].sample
     }
