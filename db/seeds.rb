@@ -79,3 +79,16 @@ p 'sample keywords_usres created.'
 # reviews
 Review.create(make_dummy_data(CSV.read('db/dummy_data/reviews.csv')))
 p 'reviews created.'
+
+# sample stock_tickets
+dummy_stock_tickets = Array.new
+1.upto(users.size-1) do |user_id|
+  1.upto(7) do |num|
+    dummy_stock_tickets << {
+      user_id: user_id,
+      ticket_id: (num * user_id)
+    }
+  end
+end
+StockTicket.create(dummy_stock_tickets)
+p 'sample stock_tickets created.'
