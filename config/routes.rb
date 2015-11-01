@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :tickets
 
   patch 'users/:id' => 'users#update'
+  post 'users/:id/select_tags/' => 'users#select_tags'
   delete 'users/:id' => 'users#destroy'
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
   as :user do
