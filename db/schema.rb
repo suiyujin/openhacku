@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20151101175832) do
     t.datetime "updated_at",             null: false
   end
 
+  add_index "ticket_candidates", ["ticket_id", "user_id"], name: "index_ticket_candidates_on_ticket_id_and_user_id", unique: true, using: :btree
   add_index "ticket_candidates", ["ticket_id"], name: "index_ticket_candidates_on_ticket_id", using: :btree
   add_index "ticket_candidates", ["user_id"], name: "index_ticket_candidates_on_user_id", using: :btree
 
