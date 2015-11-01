@@ -65,7 +65,7 @@ class TicketsController < ApplicationController
   end
 
   def apply_list
-    @ticket_candidates = @ticket.ticket_candidates
+    @ticket_candidates = @ticket.ticket_candidates.order('id desc')
   end
 
   def my_list
