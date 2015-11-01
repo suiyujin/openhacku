@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :stock, :buy, :unstock]
-  before_action :set_ticket, only: [:show, :edit, :update, :buy, :destroy]
+  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :buy, :unstock]
+  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :buy, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
@@ -64,6 +64,10 @@ class TicketsController < ApplicationController
     @tickets = query
   end
 
+  def apply_list
+    @ticket_candidates = @ticket.ticket_candidates.order('id desc')
+  end
+
   def my_list
     @tickets = Ticket.includes(:user, :bought_user).accessible_by(current_ability).no_bought.order_limit_offset(make_order_query, params[:limit], params[:offset])
   end
@@ -108,6 +112,17 @@ class TicketsController < ApplicationController
 
     if @stock_ticket.save
       render json: { message: 'Ticket was successfully stocked.' }
+    else
+      render json: @stock_ticket.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /tickets/1/apply.json
+  def apply
+    ticket_candidate = TicketCandidate.new(comment: params[:comment], ticket_id: params[:id], user_id: current_user.id)
+
+    if @ticket.user_id != current_user.id && ticket_candidate.save
+      render json: { message: 'Ticket was successfully applied.' }
     else
       render json: @stock_ticket.errors, status: :unprocessable_entity
     end
@@ -193,6 +208,9 @@ class TicketsController < ApplicationController
       when 'popular' then
         popular_ticket_ids_asc = StockTicket.group(:ticket_id).order('count_ticket_id asc, ticket_id asc').count(:ticket_id).keys
         ActiveRecord::Base.send(:sanitize_sql_array, ["field(id,?) desc", popular_ticket_ids_asc])
+      when 'noticed' then
+        noticed_ticket_ids_asc = TicketCandidate.group(:ticket_id).order('count_ticket_id asc, ticket_id asc').count(:ticket_id).keys
+        ActiveRecord::Base.send(:sanitize_sql_array, ["field(id,?) desc", noticed_ticket_ids_asc])
       when 'stock' then
         'stock_tickets.id' + order_query
       else
