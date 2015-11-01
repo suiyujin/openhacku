@@ -4,6 +4,8 @@ class Ticket < ActiveRecord::Base
   has_many :stock_tickets, dependent: :delete_all
   has_many :keywords_tickets, dependent: :delete_all
   has_many :keywords, through: :keywords_tickets
+  has_many :ticket_candidates, dependent: :delete_all
+  has_many :candidates, through: :ticket_candidates
   has_one :review
 
   scope :user, ->(user_id) { where(user_id: user_id) }
