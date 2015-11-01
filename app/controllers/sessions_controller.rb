@@ -8,6 +8,7 @@ class SessionsController < Devise::SessionsController
   def respond_with(resource, opts = {})
     teached_num = Ticket.where(bought_user_id: resource.id).count
     learned_num = resource.tickets.where(bought: true).count
+    stock_num = resource.stock_tickets.count
 
     # 評価の平均値を計算
     scores = resource.review_users_of_to_user.map(&:score)
@@ -27,6 +28,7 @@ class SessionsController < Devise::SessionsController
       review_ave: review_ave,
       teached_num: teached_num,
       learned_num: learned_num,
+      stock_num: stock_num,
       tags: resource.keywords
     }
   end
