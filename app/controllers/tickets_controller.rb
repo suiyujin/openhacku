@@ -36,6 +36,19 @@ class TicketsController < ApplicationController
       query = keyword_ticket_ids.blank? ? query.search(params[:q]) : query.search_with_in(keyword_ticket_ids.join(','), params[:q])
     end
 
+    # 場所でフィルタリング
+    query = query.send(params[:place]) if params[:place].present?
+
+    # スキルでフィルタリング
+    if params[:beginner].present?
+      case params[:beginner]
+      when '0' then
+        query = query.no_beginner
+      when '1' then
+        query = query.beginner
+      end
+    end
+
     case params[:filter]
     when 'no_bought' then
       query = query.no_bought
@@ -47,7 +60,6 @@ class TicketsController < ApplicationController
     when 'stock' then
       query = query.no_bought.joins_stock_tickets_where_user(params[:user_id])
     end
-
 
     @tickets = query
   end
@@ -156,7 +168,7 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:title, :body, :time, :price, :place, :bought, :user_id, :bought_user_id, :beginner)
+      params.require(:ticket).permit(:title, :body, :time, :price, :skype, :hangout, :offline_place, :bought, :user_id, :bought_user_id, :beginner)
     end
 
     def set_default_if_no_params
