@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :show, :stock, :apply, :buy, :unstock]
-  before_action :set_ticket, only: [:show, :edit, :update, :apply, :buy, :destroy]
+  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :buy, :unstock]
+  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :buy, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
@@ -62,6 +62,10 @@ class TicketsController < ApplicationController
     end
 
     @tickets = query
+  end
+
+  def apply_list
+    @ticket_candidates = @ticket.ticket_candidates
   end
 
   def my_list

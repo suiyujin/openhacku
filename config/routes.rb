@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'tags' => 'keywords#index'
   get 'categories' => 'categories#index'
 
+  get 'tickets/:id/apply' => 'tickets#apply_list'
   get 'tickets/my_list' => 'tickets#my_list'
   post 'tickets/:id/stock' => 'tickets#stock'
   post 'tickets/:id/apply' => 'tickets#apply'
