@@ -41,6 +41,7 @@ gem 'yajl-ruby'
 # for active job
 gem 'resque'
 gem 'resque-scheduler'
+gem 'foreman'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -76,5 +77,4 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano3-unicorn'
-  gem "capistrano-resque", "~> 0.2.2", require: false
 end
