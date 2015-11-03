@@ -15,7 +15,7 @@ class TicketsController < ApplicationController
   # GET /tickets.json
   def index
     # filterがteachedまたはlearnedまたはstockの時はuser_idが必要
-    if ['teached', 'learned', 'stock'].include?(params[:filter]) && params[:user_id].blank?
+    if ['matching', 'teached', 'learned', 'stock'].include?(params[:filter]) && params[:user_id].blank?
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
@@ -50,6 +50,9 @@ class TicketsController < ApplicationController
     end
 
     case params[:filter]
+    when 'matching' then
+      matching_tickets_ids = MatchingTicket.select(:ticket_id).where(user_id: 1).map(&:ticket_id)
+      query = query.no_bought.ticket_ids(matching_tickets_ids)
     when 'no_bought' then
       query = query.no_bought
       query = query.user(params[:user_id]) if params[:user_id].present?
