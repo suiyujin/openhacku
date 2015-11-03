@@ -27,6 +27,7 @@ role :db,  %w{suiyujin@210.140.71.3}
 
 
 
+
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb

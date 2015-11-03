@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101175832) do
+ActiveRecord::Schema.define(version: 20151102060843) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -44,6 +44,18 @@ ActiveRecord::Schema.define(version: 20151101175832) do
   add_index "keywords_users", ["keyword_id", "user_id"], name: "index_keywords_users_on_keyword_id_and_user_id", unique: true, using: :btree
   add_index "keywords_users", ["keyword_id"], name: "index_keywords_users_on_keyword_id", using: :btree
   add_index "keywords_users", ["user_id"], name: "index_keywords_users_on_user_id", using: :btree
+
+  create_table "matching_tickets", force: :cascade do |t|
+    t.boolean  "read_flag",            default: false, null: false
+    t.integer  "ticket_id",  limit: 4,                 null: false
+    t.integer  "user_id",    limit: 4,                 null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "matching_tickets", ["ticket_id", "user_id"], name: "index_matching_tickets_on_ticket_id_and_user_id", unique: true, using: :btree
+  add_index "matching_tickets", ["ticket_id"], name: "index_matching_tickets_on_ticket_id", using: :btree
+  add_index "matching_tickets", ["user_id"], name: "index_matching_tickets_on_user_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "score",        limit: 4,   null: false
@@ -133,6 +145,8 @@ ActiveRecord::Schema.define(version: 20151101175832) do
   add_foreign_key "keywords_tickets", "tickets"
   add_foreign_key "keywords_users", "keywords"
   add_foreign_key "keywords_users", "users"
+  add_foreign_key "matching_tickets", "tickets"
+  add_foreign_key "matching_tickets", "users"
   add_foreign_key "reviews", "tickets"
   add_foreign_key "reviews", "users", column: "from_user_id"
   add_foreign_key "reviews", "users", column: "to_user_id"

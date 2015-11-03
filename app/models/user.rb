@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :keywords, through: :keywords_users
   has_many :ticket_candidates, dependent: :delete_all
   has_many :want_to_buy_tickets, through: :ticket_candidates
+  has_many :matching_tickets, dependent: :delete_all
 
   # review association
   has_many :review_users_of_to_user, class_name: 'Review', foreign_key: 'to_user_id', dependent: :delete_all
