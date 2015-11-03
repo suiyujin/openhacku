@@ -66,5 +66,3 @@ namespace :deploy do
     end
   end
 end
-
-after "deploy:restart", "resque:restart"

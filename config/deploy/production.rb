@@ -25,10 +25,6 @@ role :app, %w{suiyujin@210.140.71.3}
 role :web, %w{suiyujin@210.140.71.3}
 role :db,  %w{suiyujin@210.140.71.3}
 
-role :resque_worker, "210.140.71.3"
-role :resque_scheduler, "210.140.71.3"
-
-set :workers, { "my_queue_name" => 2 }
 
 
 
