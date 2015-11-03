@@ -38,6 +38,10 @@ gem 'responders', '~> 2.0'
 # for jbuilder
 gem 'yajl-ruby'
 
+# for active job
+gem 'resque'
+gem 'resque-scheduler'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   #gem 'byebug'
