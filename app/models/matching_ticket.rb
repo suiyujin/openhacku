@@ -2,7 +2,7 @@ class MatchingTicket < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :user
 
-  def self.search_matching_user(ticket)
+  def self.search_matching_user(ticket, current_user_id)
     users = User.includes(:keywords).select(:id).order(:id)
 
     match_num_users_keywords = users.map(&:keywords).map do |user_keywords|
@@ -20,6 +20,7 @@ class MatchingTicket < ActiveRecord::Base
 
     if match_num_users_keywords_sort.size >= 10
       # 先頭10人をマッチングユーザーとする
+      match_num_users_keywords_sort.delete(current_user_id)
       return match_num_users_keywords_sort[0, 10]
     elsif match_num_users_keywords_sort.blank?
       # カテゴリーまで広げて探す
@@ -36,6 +37,7 @@ class MatchingTicket < ActiveRecord::Base
         -value
       end.map{ |hash| hash[0] }
 
+      match_num_users_categories_sort.delete(current_user_id)
       return match_num_users_categories_sort[0, 10]
     else
       # 全てのユーザーをマッチングユーザーとして、残りをカテゴリーから探す
@@ -62,6 +64,7 @@ class MatchingTicket < ActiveRecord::Base
         end.map { |m| m[:id] }
       )
 
+      match_users_ids.delete(current_user_id)
       return match_users_ids[0, 10]
     end
   end
