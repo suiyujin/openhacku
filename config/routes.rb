@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'tickets/:id/stock' => 'tickets#stock'
   post 'tickets/:id/apply' => 'tickets#apply'
   patch 'tickets/:id/select_teacher' => 'tickets#select_teacher'
+  patch 'tickets/:id/read' => 'tickets#read'
   delete 'tickets/:id/stock' => 'tickets#unstock'
   resources :tickets
 

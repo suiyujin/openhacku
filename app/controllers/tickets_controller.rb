@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :unstock]
-  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :destroy]
+  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :read, :unstock]
+  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :read, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
@@ -143,6 +143,19 @@ class TicketsController < ApplicationController
       render json: { message: 'Ticket was successfully bought.' }
     else
       render json: @ticket.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH /tickets/1/read.json
+  def read
+    unless @ticket.user_id == current_user.id
+      matching_ticket = @ticket.matching_tickets.find_by(user_id: current_user.id)
+      unless matching_ticket.read_flag
+        matching_ticket.update_attribute(:read_flag, true)
+        render json: { message: 'Ticket was successfully read.' }
+      end
+    else
+    render json: @ticket.errors, status: :unprocessable_entity
     end
   end
 
