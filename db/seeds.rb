@@ -11,6 +11,10 @@ def make_dummy_data(data)
   data[1..-1].map { |d| Hash[*data[0].zip(d).flatten] }
 end
 
+def make_matching_ticket(user_ids, ticket_id)
+  user_ids.map { |user_id| Hash[*['user_id', 'ticket_id'].zip([user_id, ticket_id]).flatten] }
+end
+
 # categories
 Category.create(make_dummy_data(CSV.read('db/dummy_data/categories.csv')))
 p 'categories created.'
@@ -99,3 +103,9 @@ p 'sample stock_tickets created.'
 TicketCandidate.create(make_dummy_data(CSV.read('db/dummy_data/ticket_candidates.csv')))
 p 'ticket_candidates created.'
 
+# matching_tickets
+Ticket.includes(:keywords).select(:id, :user_id).each do |ticket|
+  matching_user_ids = MatchingTicket.search_matching_user(ticket)
+  MatchingTicket.create(make_matching_ticket(matching_user_ids, ticket.id))
+end
+p 'matching_tickets created.'

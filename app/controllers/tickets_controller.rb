@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
-  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :unstock]
-  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :destroy]
+  skip_load_and_authorize_resource only: [:index, :apply_list, :show, :stock, :apply, :read, :unstock]
+  before_action :set_ticket, only: [:apply_list, :show, :edit, :update, :apply, :read, :destroy]
   before_action :set_default_if_no_params, only: [:index, :my_list]
 
   DEFAULT_SORT = 'create'
@@ -15,7 +15,7 @@ class TicketsController < ApplicationController
   # GET /tickets.json
   def index
     # filterがteachedまたはlearnedまたはstockの時はuser_idが必要
-    if ['teached', 'learned', 'stock'].include?(params[:filter]) && params[:user_id].blank?
+    if ['matching', 'teached', 'learned', 'stock'].include?(params[:filter]) && params[:user_id].blank?
       render json: { message: 'ERROR: need user_id parameter!' }, status: 500
     end
 
@@ -50,6 +50,11 @@ class TicketsController < ApplicationController
     end
 
     case params[:filter]
+    when 'matching' then
+      matching_tickets_ids = MatchingTicket.select(:ticket_id).where(user_id: params[:user_id]).map(&:ticket_id)
+      @tickets = query.no_bought.ticket_ids(matching_tickets_ids)
+
+      render "matching", :formats => [:json], :handlers => [:jbuilder]
     when 'no_bought' then
       query = query.no_bought
       query = query.user(params[:user_id]) if params[:user_id].present?
@@ -138,6 +143,19 @@ class TicketsController < ApplicationController
       render json: { message: 'Ticket was successfully bought.' }
     else
       render json: @ticket.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH /tickets/1/read.json
+  def read
+    unless @ticket.user_id == current_user.id
+      matching_ticket = @ticket.matching_tickets.find_by(user_id: current_user.id)
+      unless matching_ticket.read_flag
+        matching_ticket.update_attribute(:read_flag, true)
+        render json: { message: 'Ticket was successfully read.' }
+      end
+    else
+    render json: @ticket.errors, status: :unprocessable_entity
     end
   end
 
