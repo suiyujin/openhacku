@@ -51,8 +51,10 @@ class TicketsController < ApplicationController
 
     case params[:filter]
     when 'matching' then
-      matching_tickets_ids = MatchingTicket.select(:ticket_id).where(user_id: 1).map(&:ticket_id)
-      query = query.no_bought.ticket_ids(matching_tickets_ids)
+      matching_tickets_ids = MatchingTicket.select(:ticket_id).where(user_id: params[:user_id]).map(&:ticket_id)
+      @tickets = query.no_bought.ticket_ids(matching_tickets_ids)
+
+      render "matching", :formats => [:json], :handlers => [:jbuilder]
     when 'no_bought' then
       query = query.no_bought
       query = query.user(params[:user_id]) if params[:user_id].present?
