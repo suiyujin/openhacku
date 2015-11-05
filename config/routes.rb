@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   delete 'tickets/:id/stock' => 'tickets#unstock'
   resources :tickets
 
+  get 'users/:id' => 'users#show'
   patch 'users/:id' => 'users#update'
   post 'users/:id/select_tags/' => 'users#select_tags'
   delete 'users/:id' => 'users#destroy'
