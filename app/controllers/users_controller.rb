@@ -1,6 +1,17 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_user, only: [:update, :select_tags, :destroy]
+  skip_load_and_authorize_resource only: [:show]
+  before_action :set_user, only: [:show, :update, :select_tags, :destroy]
+
+  def show
+      @teached_num = Ticket.where(bought_user_id: @user.id).count
+      @learned_num = @user.tickets.where(bought: true).count
+      @stock_num = @user.stock_tickets.count
+
+      # 評価の平均値
+      scores = @user.review_users_of_to_user.map(&:score)
+      @review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
+  end
 
   def update
     if @user.update(user_params)
