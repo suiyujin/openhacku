@@ -58,8 +58,12 @@ class MatchingTicket < ActiveRecord::Base
         }
       end
 
+      match_num_users_categories_select = match_num_users_categories.select do |user|
+        user[:match_num] > 0
+      end
+
       match_users_ids.concat(
-        match_num_users_categories.sort_by do |mn|
+        match_num_users_categories_select.sort_by do |mn|
           -mn[:match_num]
         end.map { |m| m[:id] }
       )
