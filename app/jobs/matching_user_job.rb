@@ -8,7 +8,7 @@ class MatchingUserJob < ActiveJob::Base
     Rails.logger.info("matching_user created.")
 
     # お互いに通知する
-    # MatchingMailer.for_matching_user(matching_user_ids, ticket).deliver_now
+    MatchingMailer.for_matching_user(matching_user_ids, ticket).deliver_now
     # MatchingMailer.for_creating_user(matching_user_ids, ticket).deliver_now
   end
 
