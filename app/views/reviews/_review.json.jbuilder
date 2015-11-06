@@ -1,5 +1,9 @@
 json.extract! review, :id, :score, :comment
 json.created_at review.created_at.strftime("%Y.%m.%d %H:%M:%S")
+json.ticket do
+  json.id review.ticket.id
+  json.title review.ticket.title
+end
 json.from_user do
   json.id review.from_user.id
   json.username review.from_user.username
