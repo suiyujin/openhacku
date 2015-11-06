@@ -11,6 +11,11 @@ class ReviewsController < ApplicationController
 
     # 自分のチケットには評価できない & すでに評価したチケットは評価できない
     if ticket.user_id != current_user.id && Review.where(ticket_id: ticket.id, to_user_id: ticket.user_id).count == 0 && @review.save
+      # Userのreview_aveを更新
+      to_user = User.find_by(id: @review.to_user_id)
+      scores = to_user.review_users_of_to_user.map(&:score)
+      review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
+      to_user.update_attribute(:review_ave, review_ave)
 
       render "show", :formats => [:json], :handlers => [:jbuilder]
     else

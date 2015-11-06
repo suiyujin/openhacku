@@ -7,10 +7,6 @@ class UsersController < ApplicationController
       @teached_num = Ticket.where(bought_user_id: @user.id).count
       @learned_num = @user.tickets.where(bought: true).count
       @stock_num = @user.stock_tickets.count
-
-      # 評価の平均値
-      scores = @user.review_users_of_to_user.map(&:score)
-      @review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
   end
 
   def update
@@ -18,10 +14,6 @@ class UsersController < ApplicationController
       @teached_num = Ticket.where(bought_user_id: @user.id).count
       @learned_num = @user.tickets.where(bought: true).count
       @stock_num = @user.stock_tickets.count
-
-      # 評価の平均値
-      scores = @user.review_users_of_to_user.map(&:score)
-      @review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
 
       render "show", :formats => [:json], :handlers => [:jbuilder]
     else

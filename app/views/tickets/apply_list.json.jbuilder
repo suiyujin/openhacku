@@ -6,6 +6,7 @@ json.apply_list do
       json.id ticket_candidate.user.id
       json.last_name ticket_candidate.user.last_name
       json.first_name ticket_candidate.user.first_name
+      json.review_ave ticket_candidate.user.review_ave
       json.profile_img_url ticket_candidate.user.profile_img_url
     end
   end

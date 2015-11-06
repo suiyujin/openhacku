@@ -77,6 +77,16 @@ p 'keywords_users created.'
 Review.create(make_dummy_data(CSV.read('db/dummy_data/reviews.csv')))
 p 'reviews created.'
 
+# Userのreview_aveを更新
+to_users = Review.select(:to_user_id).map(&:to_user_id).uniq
+to_users.each do |to_user_id|
+  to_user = User.find(to_user_id)
+  scores = to_user.review_users_of_to_user.map(&:score)
+  review_ave = scores.blank? ? nil : (scores.inject(&:+) / scores.count.to_f).round(1)
+  to_user.update_attribute(:review_ave, review_ave)
+end
+p "calculate user review average."
+
 # sample stock_tickets
 dummy_stock_tickets = Array.new
 1.upto(users.size-1) do |user_id|

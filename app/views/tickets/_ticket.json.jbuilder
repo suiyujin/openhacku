@@ -6,6 +6,7 @@ json.updated_at ticket.updated_at.strftime("%Y.%m.%d %H:%M:%S")
 json.user do
   json.id ticket.user.id
   json.username ticket.user.username
+  json.review_ave ticket.user.review_ave
   json.profile_img_url ticket.user.profile_img_url
   json.header_img_url ticket.user.header_img_url
 end
