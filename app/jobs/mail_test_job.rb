@@ -2,7 +2,7 @@ class MailTestJob < ActiveJob::Base
   queue_as :email
 
   def perform
-    MatchingMailer.test_mail.deliver_now
+    MatchingMailer.test_mail.deliver
    # matching_user_ids = [1,8,9]
    # ticket = Ticket.find(94)
    # # お互いに通知する

@@ -103,6 +103,7 @@ class TicketsController < ApplicationController
         KeywordsTicket.create(keywords)
 
         # enqueue matching job
+        MatchingMailer.test_mail.deliver
         MailTestJob.set(wait: 10.second).perform_later
         #MatchingUserJob.set(wait: 10.second).perform_later(@ticket)
 
