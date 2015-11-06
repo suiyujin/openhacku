@@ -103,7 +103,8 @@ class TicketsController < ApplicationController
         KeywordsTicket.create(keywords)
 
         # enqueue matching job
-        MatchingUserJob.set(wait: 10.second).perform_later(@ticket)
+        MailTestJob.set(wait: 10.second).perform_later
+        #MatchingUserJob.set(wait: 10.second).perform_later(@ticket)
 
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
