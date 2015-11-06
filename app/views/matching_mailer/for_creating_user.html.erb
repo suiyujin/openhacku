@@ -1,0 +1,10 @@
+<h1>ちえぴったん てすとめいる</h1>
+
+<p>
+  <%= @ticket.title %> にマッチングしたユーザー一覧
+  <ul>
+    <% @matching_users.each do |matching_user| %>
+      <li><%= matching_user.username %></li>
+    <% end %>
+  </ul>
+</p>
