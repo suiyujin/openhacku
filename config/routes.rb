@@ -10,12 +10,18 @@ Rails.application.routes.draw do
   post 'tickets/:id/stock' => 'tickets#stock'
   post 'tickets/:id/apply' => 'tickets#apply'
   patch 'tickets/:id/select_teacher' => 'tickets#select_teacher'
+  put 'tickets/:id/select_teacher' => 'tickets#select_teacher'
+  post'tickets/:id/select_teacher' => 'tickets#select_teacher'
   patch 'tickets/:id/read' => 'tickets#read'
+  put 'tickets/:id/read' => 'tickets#read'
+  post 'tickets/:id/read' => 'tickets#read'
   delete 'tickets/:id/stock' => 'tickets#unstock'
   resources :tickets
 
   get 'users/:id' => 'users#show'
   patch 'users/:id' => 'users#update'
+  put 'users/:id' => 'users#update'
+  post 'users/:id' => 'users#update'
   post 'users/:id/select_tags/' => 'users#select_tags'
   delete 'users/:id' => 'users#destroy'
   devise_for :users, :skip => [:sessions], :controllers => { registrations: 'registrations' }
