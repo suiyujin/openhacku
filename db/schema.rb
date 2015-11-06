@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106153728) do
+ActiveRecord::Schema.define(version: 20151106210816) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -95,19 +95,21 @@ ActiveRecord::Schema.define(version: 20151106153728) do
   add_index "ticket_candidates", ["user_id"], name: "index_ticket_candidates_on_user_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
-    t.string   "title",          limit: 255,                   null: false
-    t.text     "body",           limit: 65535,                 null: false
-    t.float    "time",           limit: 24,                    null: false
-    t.integer  "price",          limit: 4,                     null: false
+    t.string   "title",          limit: 255,                                                                     null: false
+    t.text     "body",           limit: 65535,                                                                   null: false
+    t.float    "time",           limit: 24,                                                                      null: false
+    t.integer  "price",          limit: 4,                                                                       null: false
     t.string   "offline_place",  limit: 255
-    t.boolean  "bought",                       default: false, null: false
-    t.integer  "user_id",        limit: 4,                     null: false
+    t.boolean  "bought",                       default: false,                                                   null: false
+    t.integer  "user_id",        limit: 4,                                                                       null: false
     t.integer  "bought_user_id", limit: 4
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.boolean  "beginner",                     default: false, null: false
-    t.boolean  "skype",                        default: false, null: false
-    t.boolean  "hangouts",                     default: false, null: false
+    t.datetime "created_at",                                                                                     null: false
+    t.datetime "updated_at",                                                                                     null: false
+    t.boolean  "beginner",                     default: false,                                                   null: false
+    t.boolean  "skype",                        default: false,                                                   null: false
+    t.boolean  "hangouts",                     default: false,                                                   null: false
+    t.string   "header_img_url", limit: 255,   default: "http://210.140.71.3/image/tickets/header/keyboard.jpg", null: false
+    t.string   "ticket_img_url", limit: 255,   default: "http://210.140.71.3/image/tickets/ticket/keyboard.jpg", null: false
   end
 
   add_index "tickets", ["bought_user_id"], name: "index_tickets_on_bought_user_id", using: :btree
