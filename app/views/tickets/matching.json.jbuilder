@@ -1,6 +1,6 @@
 json.tickets do
   json.array! @tickets do |ticket|
-    json.extract! ticket, :id, :title, :body, :time, :price, :skype, :hangouts, :offline_place, :beginner
+    json.extract! ticket, :id, :title, :body, :time, :price, :skype, :hangouts, :offline_place, :beginner, :header_img_url, :ticket_img_url
     json.stocked_num ticket.stock_tickets.count
     json.applied_num ticket.ticket_candidates.count
     json.read_flag ticket.matching_tickets.select(:read_flag).find_by(user_id: params[:user_id]).read_flag
