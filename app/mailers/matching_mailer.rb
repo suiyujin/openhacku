@@ -17,7 +17,7 @@ class MatchingMailer < ApplicationMailer
       User.find(matching_user_id).email
     end
     @ticket = ticket
-    mail to: mail_addresses, subject: "chiepittan test mail"
+    mail to: mail_addresses, subject: "あなたにぴったりのおしえて！があります【ちえぴったん】"
   end
 
   def for_creating_user(matching_user_ids, ticket)
@@ -25,6 +25,6 @@ class MatchingMailer < ApplicationMailer
       User.find(matching_user_id)
     end
     @ticket = ticket
-    mail to: ticket.user.email, subject: "chiepittan test mail"
+    mail to: ticket.user.email, subject: "あなたのチケットにマッチングするユーザーが見つかりました！【ちえぴったん】"
   end
 end
