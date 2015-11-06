@@ -100,6 +100,20 @@ end
 StockTicket.create(dummy_stock_tickets)
 p 'sample stock_tickets created.'
 
+# sample ticket_candidates
+dummy_ticket_candidates = Array.new
+1.upto(users.size-1) do |user_id|
+  1.upto(5) do |num|
+    dummy_ticket_candidates << {
+      user_id: user_id,
+      ticket_id: (5 * user_id) + num,
+      comment: "教えます"
+    }
+  end
+end
+TicketCandidate.create(dummy_ticket_candidates)
+p 'sample ticket_candidates created.'
+
 # ticket_candidates
 TicketCandidate.create(make_dummy_data(CSV.read('db/dummy_data/ticket_candidates.csv')))
 p 'ticket_candidates created.'
