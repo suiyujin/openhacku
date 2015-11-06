@@ -21,5 +21,10 @@ class MatchingMailer < ApplicationMailer
   end
 
   def for_creating_user(matching_user_ids, ticket)
+    @matching_users = matching_user_ids.map do |matching_user_id|
+      User.find(matching_user_id)
+    end
+    @ticket = ticket
+    mail to: ticket.user.email, subject: "chiepittan test mail"
   end
 end
