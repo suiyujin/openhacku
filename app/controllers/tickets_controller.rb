@@ -103,7 +103,17 @@ class TicketsController < ApplicationController
         KeywordsTicket.create(keywords)
 
         # enqueue matching job
-        MatchingUserJob.set(wait: 10.second).perform_later(@ticket)
+        #MailTestJob.set(wait: 10.second).perform_later
+        #MatchingUserJob.set(wait: 10.second).perform_later(@ticket)
+
+        matching_user_ids = MatchingTicket.search_matching_user(@ticket)
+        Rails.logger.debug("matching_user_ids: #{matching_user_ids}")
+        MatchingTicket.create(make_matching_ticket(matching_user_ids, @ticket.id))
+        Rails.logger.debug("matching_user created.")
+
+        # お互いに通知する
+        MatchingMailer.for_matching_user(matching_user_ids, @ticket).deliver_now
+        MatchingMailer.for_creating_user(matching_user_ids, @ticket).deliver_now
 
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
@@ -197,6 +207,10 @@ class TicketsController < ApplicationController
   end
 
   private
+    def make_matching_ticket(user_ids, ticket_id)
+      user_ids.map { |user_id| Hash[*['user_id', 'ticket_id'].zip([user_id, ticket_id]).flatten] }
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket
       @ticket = Ticket.find(params[:id])
