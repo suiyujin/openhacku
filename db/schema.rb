@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151102060843) do
+ActiveRecord::Schema.define(version: 20151106055042) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20151102060843) do
     t.string   "last_name",              limit: 255
     t.string   "first_name",             limit: 255
     t.integer  "sex",                    limit: 4
+    t.float    "review_ave",             limit: 24
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
