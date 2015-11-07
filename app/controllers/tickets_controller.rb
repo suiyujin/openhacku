@@ -113,7 +113,7 @@ class TicketsController < ApplicationController
 
         # お互いに通知する
         MatchingMailer.for_matching_user(matching_user_ids, @ticket).deliver_now
-        MatchingMailer.for_creating_user(matching_user_ids, @ticket).deliver_now
+        #MatchingMailer.for_creating_user(matching_user_ids, @ticket).deliver_now
 
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
